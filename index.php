@@ -1,7 +1,3 @@
 <?php
-
-/* 
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Scripting/EmptyPHP.php to edit this template
- */
-
+require_once dirname(__FILE__).'/config.php';
+include _ROOT_PATH.'/app/calc_view.php';
