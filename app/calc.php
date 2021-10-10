@@ -11,10 +11,10 @@ if ( ! (isset($x) && isset($y) && isset($op))) {
 }
 
 if ( $x == "") {
-	$messages [] = 'Nie podano liczby 1';
+	$messages [] = 'Nie podano Kwoty Kredytu';
 }
 if ( $y == "") {
-	$messages [] = 'Nie podano liczby 2';
+	$messages [] = 'Nie podano Czasu trwania';
 }
 if ( $op == "") {
 	$messages [] = 'Nie podano Oprocentowania';
@@ -24,15 +24,15 @@ if ( $op == "") {
 if (empty( $messages )) {
 	
 	if (! is_numeric( $x )) {
-		$messages [] = 'Pierwsza wartość nie jest liczbą całkowitą';
+		$messages [] = 'Wartość Kredytu nie jest liczbą całkowitą';
 	}
 	
 	if (! is_numeric( $y )) {
-		$messages [] = 'Druga wartość nie jest liczbą całkowitą';
+		$messages [] = 'Czas trwania nie jest liczbą całkowitą';
 	}
 
 	if (! is_numeric( $op )) {
-		$messages [] = 'Oprocentowanie nie jest liczbą całkowitą';
+		$messages [] = 'Oprocentowanie nie jest liczbą';
 	}		
 
 }
@@ -44,23 +44,10 @@ if (empty ( $messages )) {
 	$y = intval($y);
 	$op = doubleval($op);
 	
-	//switch ($op) {
-	//	case '12' :
-	$result = ($x / ($y*12)) + ($op * 0.01);
+	$result = (($x + (($x * $op)/100)) / ($y*12));
 
 	$result = number_format($result,2,',',' ');
-	//$result = number_format($result, 2,',',' ')
-	//		break;
-	//	case 'times' :
-	//		$result = $x * $y;
-	//		break;
-	//	case 'div' :
-	//		$result = $x / $y;
-	//		break;
-	//	default :
-	//		$result = $x + $y;
-	//		break;
-	//}
+
 }
 
 include 'calc_view.php';
