@@ -1,28 +1,40 @@
-<?php require_once dirname(__FILE__) .'/../config.php';?>
-<!DOCTYPE HTML>
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="pl" lang="pl">
-<head>
-	<meta charset="utf-8" />
-	<title>Kalkulator</title>
-</head>
-<body>
+<?php //góra strony z szablonu 
+include _ROOT_PATH.'/templates/top.php';
+?>
 
-<form action="<?php print(_APP_URL);?>/app/calc.php" method="post">
-	<label for="id_x">Podaj kwotę kredytu : </label>
-	<input id="id_x" type="text" name="x" value="<?php print($x); ?>" /><br />
 
-	<label for="id_op"> Podaj jego oprocentowania (bez znaku procent) : </label>
-	<input id="id_op" type="text" name="op" value="<?php print($op); ?>" /><br />
-
-	<label for="id_y">Podaj w latach na jak długo go bierzesz : </label>
-	<input id="id_y" type="text" name="y" value="<?php print($y); ?>" /><br />
-	<input type="submit" value="Oblicz" />
-</form>	
+<div class="container">
+	<h3 class="px-5 text-center">Prosty kalkulator</h2>
+	<div class="row">
+		<form class="col-12 pure-form pure-form-aligned" action="<?php print(_APP_ROOT);?>/app/calc.php" method="post">
+			<fieldset>
+			<div class="form-group">
+				<label for="x">Podaj kwotę kredytu :</label>
+				<input class="form-control" id="x" type="text" placeholder="wartość kredytu" name="x" value="<?php out($form['x']); ?>">
+			</div >
+			<div class="form-group">
+				<label for="op"> Podaj jego oprocentowania (bez znaku procent) : </label>
+				<input class="form-control" id="op" type="text" placeholder="wartość oprocentowania" name="op" value="<?php out($form['op']); ?>" />
+			</div>
+			<div class="form-group">
+				<label for="y">Podaj w latach na jak długo go bierzesz : </label>
+				<input class="form-control" id="y" type="text" placeholder="ilość lat" name="y" value="<?php out($form['y']); ?>">
+			</div>
+			</fieldset>
+			<div class="text-center">
+				<button style type="submit" class="px-5 my-2 btn btn-lg btn-success btn-block">Oblicz</button>
+			</div>
+		</form>
+	</div>
+</div>
+<div class="messages">
 
 <?php
+//wyświeltenie listy błędów, jeśli istnieją
 if (isset($messages)) {
 	if (count ( $messages ) > 0) {
-		echo '<ol style="margin: 20px; padding: 10px 10px 10px 30px; border-radius: 5px; background-color: #f88; width:300px;">';
+	echo '<h4>Wystąpiły błędy: </h4>';
+	echo '<ol class="err">';
 		foreach ( $messages as $key => $msg ) {
 			echo '<li>'.$msg.'</li>';
 		}
@@ -31,11 +43,29 @@ if (isset($messages)) {
 }
 ?>
 
+<?php
+//wyświeltenie listy informacji, jeśli istnieją
+if (isset($infos)) {
+	if (count ( $infos ) > 0) {
+	echo '<h4>Informacje: </h4>';
+	echo '<ol class="inf">';
+		foreach ( $infos as $key => $msg ) {
+			echo '<li>'.$msg.'</li>';
+		}
+		echo '</ol>';
+	}
+}
+?>
+
 <?php if (isset($result)){ ?>
-<div style="margin: 20px; padding: 10px; border-radius: 5px; background-color: #ff0; width:300px;">
-<?php echo 'Rata miesięczna : '.$result;?> PLN
-</div>
+	<h4>Rata miesięczna : </h4>
+	<p class="res">
+<?php print($result); ?> PLN
+	</p>
 <?php } ?>
 
-</body>
-</html>
+</div>
+
+<?php //dół strony z szablonu 
+include _ROOT_PATH.'/templates/bottom.php';
+?>
