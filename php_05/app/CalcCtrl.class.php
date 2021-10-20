@@ -49,10 +49,13 @@ class CalcCtrl {
 		
 		// sprawdzenie, czy potrzebne wartości zostały przekazane
 		if ($this->form->x == "") {
-			$this->msgs->addError('Nie podano liczby 1');
+			$this->msgs->addError('Nie podano Kwoty Kredytu');
 		}
 		if ($this->form->y == "") {
-			$this->msgs->addError('Nie podano liczby 2');
+			$this->msgs->addError('Nie podano Czasu trwania');
+		}
+		if ($this->form->op == "") {
+			$this->msgs->addError('Nie podano Oprocentowania');
 		}
 		
 		// nie ma sensu walidować dalej gdy brak parametrów
@@ -60,11 +63,15 @@ class CalcCtrl {
 			
 			// sprawdzenie, czy $x i $y są liczbami całkowitymi
 			if (! is_numeric ( $this->form->x )) {
-				$this->msgs->addError('Pierwsza wartość nie jest liczbą całkowitą');
+				$this->msgs->addError('Wartość Kredytu nie jest liczbą całkowitą');
 			}
 			
 			if (! is_numeric ( $this->form->y )) {
-				$this->msgs->addError('Druga wartość nie jest liczbą całkowitą');
+				$this->msgs->addError('Czas trwania nie jest liczbą całkowitą');
+			}
+
+			if (! is_numeric ( $this->form->op )) {
+				$this->msgs->addError('Oprocentowanie nie jest liczbą');
 			}
 		}
 		
@@ -83,27 +90,12 @@ class CalcCtrl {
 			//konwersja parametrów na int
 			$this->form->x = intval($this->form->x);
 			$this->form->y = intval($this->form->y);
+			$this->form->op = intval($this->form->op);
 			$this->msgs->addInfo('Parametry poprawne.');
-				
-			//wykonanie operacji
-			switch ($this->form->op) {
-				case 'minus' :
-					$this->result->result = $this->form->x - $this->form->y;
-					$this->result->op_name = '-';
-					break;
-				case 'times' :
-					$this->result->result = $this->form->x * $this->form->y;
-					$this->result->op_name = '*';
-					break;
-				case 'div' :
-					$this->result->result = $this->form->x / $this->form->y;
-					$this->result->op_name = '/';
-					break;
-				default :
-					$this->result->result = $this->form->x + $this->form->y;
-					$this->result->op_name = '+';
-					break;
-			}
+			
+			$this->result->result = (($this->form->x + (($this->form->x * $this->form->op)/100)) / ($this->form->y*12));
+
+			$this->result->result = number_format($this->result->result,2,',',' ');
 			
 			$this->msgs->addInfo('Wykonano obliczenia.');
 		}
@@ -121,7 +113,7 @@ class CalcCtrl {
 		$smarty = new Smarty();
 		$smarty->assign('conf',$conf);
 		
-		$smarty->assign('page_title','Przykład 05');
+		$smarty->assign('page_title','Zadanie 05');
 		$smarty->assign('page_description','Obiektowość. Funkcjonalność aplikacji zamknięta w metodach różnych obiektów. Pełen model MVC.');
 		$smarty->assign('page_header','Obiekty w PHP');
 				
